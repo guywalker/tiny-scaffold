@@ -1,5 +1,21 @@
 {
   "name": "tiny-scaffold",
+  "description": "A tiny scaffolder to automate common additions to a codebase.",
+  "keywords": [
+    "scaffold",
+    "scaffolder",
+    "scaffolding",
+    "template",
+    "templates"
+  ],
+  "homepage": "https://github.com/guywalker/tiny-scaffold",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guywalker/tiny-scaffold.git"
+  },
+  "author": {
+    "name": "Guy Walker"
+  },
   "private": false,
   "license": "MIT",
   "version": "0.0.1",
@@ -36,5 +52,8 @@
     "typescript": "^4.9.4",
     "vite": "^4.0.4",
     "vitest": "^0.28.5"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }

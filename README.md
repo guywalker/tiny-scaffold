@@ -25,6 +25,25 @@ const replacements = {
 await TinyScaffold(templates, replacements);
 ```
 
+`TinyScaffold` accepts two arguments:
+
+`templates`: `Template | Template[]`
+
+`replacements`: `{[key: string]: string}`
+
+A Template is a key-value pair where the key is the template file to use and the value is either the path to be copied to, or a config for updating an existing file.
+
+The config can be:
+```js
+{
+    target: 'destination/file/toupdate.cs', // Existing file to update
+    selector: '// inject', // location for the template to be inserted after
+    insertBefore: false // default
+}
+```
+
+The selector is automatically regex escaped and will be used to determine where a new line should be inserted after.
+
 ## Coming soon
 - Support for custom regex selectors
 - Directories
