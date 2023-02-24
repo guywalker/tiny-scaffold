@@ -2,7 +2,7 @@ import { readFileSync, existsSync, writeFileSync } from "fs";
 
 export type TemplateConfig = {
   target: string,
-  pattern?: string,
+  selector?: string,
   insertBefore?: boolean
 }
 
@@ -24,9 +24,9 @@ export default function scaffolder(scaffoldConfig: ScaffoldConfig, replacements?
             templateConfig = { target: templateConfig };
           }
 
-          const { target, pattern, insertBefore } = templateConfig as TemplateConfig;
+          const { target, selector, insertBefore } = templateConfig as TemplateConfig;
           const compiled = compileTemplate(templateSrc, replacements);
-          updateTarget(target, compiled, pattern, insertBefore);
+          updateTarget(target, compiled, selector, insertBefore);
 
           filesUpdated.push(target);
         }
@@ -44,8 +44,8 @@ function compileTemplate(templateSrc: string, replacements?: {key: string, value
   return replacements ? replaceTokens(templateContent, replacements) : templateContent;
 }
 
-function updateTarget(target: string, compiled: string, pattern?: string, insertBefore?: boolean) {
-  const newContent = getNewTargetContent(target, compiled, pattern, insertBefore);
+function updateTarget(target: string, compiled: string, selector?: string, insertBefore?: boolean) {
+  const newContent = getNewTargetContent(target, compiled, selector, insertBefore);
   writeFileSync(target, newContent, { encoding: "utf8" });
 }
 
@@ -60,12 +60,13 @@ function escapeRegex(string: string) {
   return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 
-function getNewTargetContent(target: string, templateContent: string, pattern?: string, insertBefore?: boolean) {
-  if (pattern) {
+function getNewTargetContent(target: string, templateContent: string, selector?: string, insertBefore?: boolean) {
+  if (selector) {
     if (existsSync(target)) {
       const targetContent = readFileSync(target, "utf8");
-      const insert = insertBefore ? `${templateContent}\n\r${pattern}` : `${pattern}\n\r${templateContent}`;
-      return targetContent.replace(new RegExp(escapeRegex(pattern), "gm"), insert);
+      return targetContent.replace(new RegExp('.*?' + escapeRegex(selector) + '.*' , "gm"), (match) => {
+        return insertBefore ? `${templateContent}\n${match}` : `${match}\n${templateContent}`;
+      });
     } else {
       throw new Error(`Target file ${target} does not exist`);
     }
