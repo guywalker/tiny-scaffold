@@ -1,5 +1,6 @@
 {
   "name": "tiny-scaffold",
+  "version": "0.0.2",
   "description": "A tiny scaffolder to automate common additions to a codebase.",
   "keywords": [
     "scaffold",
@@ -18,7 +19,6 @@
   },
   "private": false,
   "license": "MIT",
-  "version": "0.0.1",
   "main": "./dist/tiny-scaffold.cjs",
   "module": "./dist/tiny-scaffold.mjs",
   "scripts": {
