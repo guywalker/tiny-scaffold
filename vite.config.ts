@@ -33,7 +33,7 @@ module.exports = defineConfig({
       fileName: (format) => fileName[format],
     },
     rollupOptions: {
-      external: ["fs"],
+      external: ["fs", "path", "os"],
     },
   },
 });

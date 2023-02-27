@@ -1,4 +1,4 @@
-var tinyScaffold = function(fs2) {
+var tinyScaffold = function(fs2, path2, os2) {
   "use strict";
   function scaffolder(scaffoldConfig, replacements) {
     return new Promise((resolve, reject) => {
@@ -23,7 +23,7 @@ var tinyScaffold = function(fs2) {
     });
   }
   function compileTemplate(templateSrc, replacements) {
-    const templateContent = fs2.readFileSync(templateSrc, "utf8");
+    const templateContent = fs2.readFileSync(path2.normalize(templateSrc), "utf8");
     return replacements ? replaceTokens(templateContent, replacements) : templateContent;
   }
   function updateTarget(target, compiled, selector, insertBefore) {
@@ -42,11 +42,9 @@ var tinyScaffold = function(fs2) {
   function getNewTargetContent(target, templateContent, selector, insertBefore) {
     if (selector) {
       if (fs2.existsSync(target)) {
-        const targetContent = fs2.readFileSync(target, "utf8");
+        const targetContent = fs2.readFileSync(path2.normalize(target), "utf8");
         return targetContent.replace(new RegExp(".*?" + escapeRegex(selector) + ".*", "gm"), (match) => {
-          return insertBefore ? `${templateContent}
-${match}` : `${match}
-${templateContent}`;
+          return insertBefore ? `${templateContent}${os2.EOL}${match}` : `${match}${os2.EOL}${templateContent}`;
         });
       } else {
         throw new Error(`Target file ${target} does not exist`);
@@ -56,4 +54,4 @@ ${templateContent}`;
     }
   }
   return scaffolder;
-}(fs);
+}(fs, path, os);

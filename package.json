@@ -1,6 +1,6 @@
 {
   "name": "tiny-scaffold",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A tiny scaffolder to automate common additions to a codebase.",
   "keywords": [
     "scaffold",

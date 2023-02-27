@@ -1,4 +1,6 @@
 import { readFileSync, existsSync, writeFileSync } from "fs";
+import path from "path";
+import { EOL } from "os";
 
 export type TemplateConfig = {
   target: string,
@@ -40,7 +42,7 @@ export default function scaffolder(scaffoldConfig: ScaffoldConfig, replacements?
 }
 
 function compileTemplate(templateSrc: string, replacements?: {key: string, value: string}) {
-  const templateContent = readFileSync(templateSrc, "utf8");
+  const templateContent = readFileSync(path.normalize(templateSrc), "utf8");
   return replacements ? replaceTokens(templateContent, replacements) : templateContent;
 }
 
@@ -63,9 +65,9 @@ function escapeRegex(string: string) {
 function getNewTargetContent(target: string, templateContent: string, selector?: string, insertBefore?: boolean) {
   if (selector) {
     if (existsSync(target)) {
-      const targetContent = readFileSync(target, "utf8");
+      const targetContent = readFileSync(path.normalize(target), "utf8");
       return targetContent.replace(new RegExp('.*?' + escapeRegex(selector) + '.*' , "gm"), (match) => {
-        return insertBefore ? `${templateContent}\n${match}` : `${match}\n${templateContent}`;
+        return insertBefore ? `${templateContent}${EOL}${match}` : `${match}${EOL}${templateContent}`;
       });
     } else {
       throw new Error(`Target file ${target} does not exist`);
